@@ -3,8 +3,8 @@ sources:
     description: Google Ads data synced via Fivetran
     
     # TODO: Update these values with your BigQuery information
-    database: YOUR_GCP_PROJECT_ID        # Replace with your GCP Project ID (e.g., my-project-123456)
-    schema: google_ads_fivetran          # Replace with your actual dataset name in BigQuery
+    database: savvy-webbing-480102-t0       # Replace with your GCP Project ID (e.g., my-project-123456)
+    schema: google_ads           # Replace with your actual dataset name in BigQuery
     
     tables:
       # Account Tables
