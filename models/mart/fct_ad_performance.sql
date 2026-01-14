@@ -13,7 +13,6 @@ ad_history as (
     select 
         ad_id,
         ad_group_id,
-        campaign_id,
         ad_name,
         ad_type,
         ad_status,
@@ -148,7 +147,6 @@ final as (
     left join ad_history ah
         on ads.ad_id = ah.ad_id
         and ads.ad_group_id = ah.ad_group_id
-        and ads.campaign_id = ah.campaign_id
     left join ad_group_history agh
         on ads.ad_group_id = agh.ad_group_id
         and ads.campaign_id = agh.campaign_id

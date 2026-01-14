@@ -23,9 +23,15 @@ renamed as (
         search_term_match_type,
         status as search_term_status,
         
+        -- Dimensions
+        cast(null as string) as ad_network_type,  -- Not available in search_term_stats
+        cast(null as string) as device,  -- Not available in search_term_stats
+        cast(null as string) as interaction_event_types,  -- Not available in search_term_stats
+        
         -- Metrics - Impressions & Clicks
         impressions,
         clicks,
+        0 as interactions,  -- Not available in search_term_stats
         
         -- Metrics - Position
         absolute_top_impression_percentage,
@@ -33,6 +39,7 @@ renamed as (
         
         -- Metrics - Conversions
         conversions,
+        cast(null as float64) as conversions_value,  -- Not available in search_term_stats source
         view_through_conversions,
         conversions_from_interactions_rate,
         conversions_from_interactions_value_per_interaction,
