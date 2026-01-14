@@ -1,0 +1,222 @@
+version: 2
+
+models:
+  # Fact Tables
+  - name: fct_campaign_performance
+    description: Daily campaign performance with all key metrics and calculated KPIs
+    columns:
+      - name: account_id
+        description: Google Ads account ID
+      - name: campaign_id
+        description: Campaign ID
+      - name: campaign_name
+        description: Campaign name
+      - name: stat_date
+        description: Date of the statistics
+      - name: cost
+        description: Total cost in currency (converted from micros)
+      - name: conversions
+        description: Total number of conversions
+      - name: ctr
+        description: Click-through rate (%)
+      - name: cpc
+        description: Cost per click
+      - name: conversion_rate
+        description: Conversion rate (%)
+      - name: roas_percentage
+        description: Return on ad spend as percentage
+      - name: budget_id
+        description: Campaign budget ID
+      - name: budget_name
+        description: Budget name
+      - name: daily_budget
+        description: Daily budget amount in currency (converted from micros)
+      - name: budget_period
+        description: Budget period (DAILY, CUSTOM, etc.)
+      - name: daily_budget_spend_pct
+        description: Percentage of daily budget spent (%)
+      - name: daily_budget_remaining
+        description: Remaining daily budget amount
+
+  - name: fct_ad_group_performance
+    description: Daily ad group performance with campaign context
+    columns:
+      - name: account_id
+        description: Google Ads account ID
+      - name: campaign_id
+        description: Campaign ID
+      - name: ad_group_id
+        description: Ad group ID
+      - name: ad_group_name
+        description: Ad group name
+      - name: stat_date
+        description: Date of the statistics
+
+  - name: fct_ad_performance
+    description: Daily ad performance with full hierarchy
+    columns:
+      - name: account_id
+        description: Google Ads account ID
+      - name: campaign_id
+        description: Campaign ID
+      - name: ad_group_id
+        description: Ad group ID
+      - name: ad_id
+        description: Ad ID
+      - name: ad_name
+        description: Ad name
+      - name: stat_date
+        description: Date of the statistics
+
+  - name: fct_keyword_performance
+    description: Daily keyword performance metrics
+    columns:
+      - name: account_id
+        description: Google Ads account ID
+      - name: campaign_id
+        description: Campaign ID
+      - name: ad_group_id
+        description: Ad group ID
+      - name: criterion_id
+        description: Keyword criterion ID
+      - name: keyword_text
+        description: The actual keyword text
+      - name: keyword_match_type
+        description: Keyword match type (EXACT, PHRASE, BROAD)
+      - name: stat_date
+        description: Date of the statistics
+
+  - name: fct_search_term_performance
+    description: Daily search term performance showing actual user queries
+    columns:
+      - name: account_id
+        description: Google Ads account ID
+      - name: campaign_id
+        description: Campaign ID
+      - name: ad_group_id
+        description: Ad group ID
+      - name: search_term
+        description: Actual search query entered by user
+      - name: stat_date
+        description: Date of the statistics
+
+  # Report Tables
+  - name: rpt_campaign_summary
+    description: Campaign-level summary with all-time aggregated metrics
+    columns:
+      - name: campaign_id
+        description: Campaign ID
+      - name: campaign_name
+        description: Campaign name
+      - name: total_cost
+        description: Total spend across all time
+      - name: total_conversions
+        description: Total conversions across all time
+      - name: overall_ctr
+        description: Overall click-through rate
+      - name: overall_roas_percentage
+        description: Overall return on ad spend
+      - name: budget_id
+        description: Campaign budget ID
+      - name: budget_name
+        description: Budget name
+      - name: total_budget_allocated
+        description: Total budget allocated across all tracked days
+      - name: overall_budget_spend_pct
+        description: Overall percentage of budget spent (%)
+      - name: total_budget_remaining
+        description: Total remaining budget amount
+      - name: budget_status
+        description: Budget utilization status (Over Budget, Near Budget Limit, On Track, Under Utilized, No Budget Set)
+
+  - name: rpt_ad_group_summary
+    description: Ad group-level summary with all-time aggregated metrics
+    columns:
+      - name: campaign_id
+        description: Campaign ID
+      - name: ad_group_id
+        description: Ad group ID
+      - name: ad_group_name
+        description: Ad group name
+      - name: total_cost
+        description: Total spend across all time
+      - name: overall_conversion_rate
+        description: Overall conversion rate
+
+  - name: rpt_device_performance
+    description: Performance comparison across different device types
+    columns:
+      - name: device
+        description: Device type (Desktop, Mobile, Tablet)
+      - name: total_cost
+        description: Total spend for this device type
+      - name: overall_ctr
+        description: Overall CTR for this device type
+      - name: overall_conversion_rate
+        description: Overall conversion rate for this device
+
+  - name: rpt_monthly_performance
+    description: Monthly performance trends over time
+    columns:
+      - name: year_month
+        description: Year and month in YYYY-MM format
+      - name: month_start_date
+        description: First day of the month
+      - name: total_cost
+        description: Total spend for the month
+      - name: total_conversions
+        description: Total conversions for the month
+      - name: overall_roas_percentage
+        description: ROAS for the month
+
+  - name: rpt_budget_tracking
+    description: Detailed budget tracking report with spend analysis and pacing metrics
+    columns:
+      - name: campaign_id
+        description: Campaign ID
+      - name: campaign_name
+        description: Campaign name
+      - name: budget_id
+        description: Budget ID
+      - name: budget_name
+        description: Budget name
+      - name: daily_budget
+        description: Daily budget amount
+      - name: total_budget_allocated
+        description: Sum of daily budgets across all tracked days
+      - name: total_spent
+        description: Total amount spent
+      - name: budget_spent_pct
+        description: Percentage of total budget spent
+      - name: budget_remaining
+        description: Remaining budget amount
+      - name: avg_daily_spend
+        description: Average daily spend
+      - name: avg_daily_pacing_pct
+        description: Average daily pacing as percentage of budget
+      - name: days_over_budget
+        description: Number of days spending exceeded budget
+      - name: budget_status
+        description: Budget status (OVER_BUDGET, AT_BUDGET, ON_TRACK, UNDER_PACING, SIGNIFICANTLY_UNDER)
+      - name: pacing_status
+        description: Pacing status (OVERSPENDING, OPTIMAL, ACCEPTABLE, UNDERSPENDING, NO_BUDGET)
+
+  - name: rpt_budget_gauge
+    description: Simplified budget metrics optimized for Gauge chart visualization
+    columns:
+      - name: metric_level
+        description: Level of aggregation (ACCOUNT_TOTAL, CHANNEL, CAMPAIGN, STATUS)
+      - name: metric_name
+        description: Name of the metric (campaign name, channel type, or status)
+      - name: total_budget
+        description: Total budget allocated
+      - name: total_spent
+        description: Total amount spent
+      - name: budget_remaining
+        description: Remaining budget
+      - name: spend_percentage
+        description: Percentage of budget spent - use this for Gauge chart
+      - name: gauge_color
+        description: Suggested color for Gauge visualization (RED, ORANGE, GREEN, YELLOW, GRAY)
+      - name: status
+        description: Budget utilization status
