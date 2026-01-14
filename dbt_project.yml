@@ -41,3 +41,7 @@ models:
     staging:
       +materialized: view
       +schema: staging
+    # Mart models - materialized as tables for performance
+    mart:
+      +materialized: table
+      +schema: mart
