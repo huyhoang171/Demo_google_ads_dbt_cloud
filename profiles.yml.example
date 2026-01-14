@@ -1,0 +1,61 @@
+# Example profiles.yml for BigQuery
+# Copy this file to ~/.dbt/profiles.yml (or C:\Users\ADMIN\.dbt\profiles.yml on Windows)
+
+google_ads:
+  target: dev
+  outputs:
+    dev:
+      type: bigquery
+      method: service-account
+      
+      # REQUIRED: Replace with your values
+      project: YOUR_GCP_PROJECT_ID          # Example: my-gcp-project-123456
+      dataset: google_ads_analytics          # Main dataset for dbt models
+      
+      # Path to service account JSON key file
+      keyfile: /path/to/service-account.json # Example: C:\Users\ADMIN\.dbt\service-account.json
+      
+      # Optional settings
+      threads: 4                             # Number of parallel threads
+      timeout_seconds: 300                   # Query timeout
+      location: US                           # BigQuery location (US, EU, asia-southeast1, etc.)
+      priority: interactive                  # Query priority (interactive or batch)
+      
+      # Maximum bytes billed (optional, for cost control)
+      # maximum_bytes_billed: 1000000000    # 1GB limit
+      
+    prod:
+      type: bigquery
+      method: service-account
+      project: YOUR_GCP_PROJECT_ID
+      dataset: google_ads_analytics_prod
+      keyfile: /path/to/service-account.json
+      threads: 8
+      timeout_seconds: 300
+      location: US
+
+# Alternative: Using OAuth instead of service account
+# google_ads:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: bigquery
+#       method: oauth
+#       project: YOUR_GCP_PROJECT_ID
+#       dataset: google_ads_analytics
+#       threads: 4
+#       timeout_seconds: 300
+#       location: US
+
+# Alternative: Using application default credentials (for local development)
+# google_ads:
+#   target: dev
+#   outputs:
+#     dev:
+#       type: bigquery
+#       method: oauth-secrets
+#       project: YOUR_GCP_PROJECT_ID
+#       dataset: google_ads_analytics
+#       threads: 4
+#       timeout_seconds: 300
+#       location: US

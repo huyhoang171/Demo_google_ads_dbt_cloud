@@ -1,0 +1,208 @@
+sources:
+  - name: google_ads
+    description: Google Ads data synced via Fivetran
+    
+    # TODO: Update these values with your BigQuery information
+    database: YOUR_GCP_PROJECT_ID        # Replace with your GCP Project ID (e.g., my-project-123456)
+    schema: google_ads_fivetran          # Replace with your actual dataset name in BigQuery
+    
+    tables:
+      # Account Tables
+      - name: account_history
+        description: Historical account information
+      - name: account_hourly_stats
+        description: Hourly performance statistics at account level
+      - name: account_label_history
+        description: Historical account label associations
+      - name: account_stats
+        description: Daily performance statistics at account level
+      
+      # Ad Tables
+      - name: ad_history
+        description: Historical ad information
+      - name: ad_stats
+        description: Daily performance statistics at ad level
+      - name: ad_custom_parameter_history
+        description: Historical custom parameters for ads
+      - name: ad_label_history
+        description: Historical ad label associations
+      - name: ad_listing_group_criterion_history
+        description: Historical listing group criteria for ads
+      - name: ad_policy_topic_history
+        description: Historical policy topics for ads
+      - name: ad_policy_topic_constraint_history
+        description: Historical policy topic constraints
+      - name: ad_policy_topic_evidence_history
+        description: Historical policy topic evidence
+      
+      # Ad Group Tables
+      - name: ad_group_history
+        description: Historical ad group information
+      - name: ad_group_stats
+        description: Daily performance statistics at ad group level
+      - name: ad_group_hourly_stats
+        description: Hourly performance statistics at ad group level
+      - name: ad_group_bidding_strategy_history
+        description: Historical bidding strategy for ad groups
+      - name: ad_group_bid_modifier_history
+        description: Historical bid modifiers for ad groups
+      - name: ad_group_criterion_history
+        description: Historical targeting criteria for ad groups
+      - name: ad_group_criterion_label_history
+        description: Historical ad group criterion label associations
+      - name: ad_group_criterion_custom_parameter_history
+        description: Historical custom parameters for ad group criteria
+      - name: ad_group_custom_parameter_history
+        description: Historical custom parameters for ad groups
+      - name: ad_group_label_history
+        description: Historical ad group label associations
+      
+      # Campaign Tables
+      - name: campaign_history
+        description: Historical campaign information
+      - name: campaign_stats
+        description: Daily performance statistics at campaign level
+      - name: campaign_hourly_stats
+        description: Hourly performance statistics at campaign level
+      - name: campaign_budget_history
+        description: Historical campaign budget information
+      - name: campaign_bidding_strategy_history
+        description: Historical bidding strategy for campaigns
+      - name: campaign_bid_modifier_history
+        description: Historical bid modifiers for campaigns
+      - name: campaign_criterion_history
+        description: Historical targeting criteria for campaigns
+      - name: campaign_criterion_ad_schedule_history
+        description: Historical ad schedule criteria for campaigns
+      - name: campaign_criterion_listing_scope_dimension_history
+        description: Historical listing scope dimensions for campaign criteria
+      - name: campaign_criterion_proximity_history
+        description: Historical proximity criteria for campaigns
+      - name: campaign_label_history
+        description: Historical campaign label associations
+      - name: campaign_conversion_goal_history
+        description: Historical conversion goals for campaigns
+      - name: campaign_app_campaign_setting_history
+        description: Historical app campaign settings
+      - name: campaign_dynamic_search_ads_setting_history
+        description: Historical dynamic search ads settings
+      - name: campaign_geo_target_type_setting_history
+        description: Historical geo target type settings
+      - name: campaign_hotel_setting_history
+        description: Historical hotel campaign settings
+      - name: campaign_local_setting_history
+        description: Historical local campaign settings
+      - name: campaign_network_setting_history
+        description: Historical network settings for campaigns
+      - name: campaign_optimization_goal_setting_history
+        description: Historical optimization goal settings
+      - name: campaign_real_time_bidding_setting_history
+        description: Historical real-time bidding settings
+      - name: campaign_shared_set_history
+        description: Historical shared set associations for campaigns
+      - name: campaign_shopping_setting_history
+        description: Historical shopping campaign settings
+      - name: campaign_targeting_setting_history
+        description: Historical targeting settings for campaigns
+      - name: campaign_tracking_setting_history
+        description: Historical tracking settings for campaigns
+      
+      # Ad Type Specific Tables
+      - name: app_ad_history
+        description: Historical app ad information
+      - name: app_engagement_ad_history
+        description: Historical app engagement ad information
+      - name: call_ad_history
+        description: Historical call ad information
+      - name: demand_gen_carousel_ad_history
+        description: Historical demand gen carousel ad information
+      - name: demand_gen_multi_asset_ad_history
+        description: Historical demand gen multi-asset ad information
+      - name: demand_gen_product_ad_history
+        description: Historical demand gen product ad information
+      - name: display_upload_ad_history
+        description: Historical display upload ad information
+      - name: expanded_dynamic_search_ad_history
+        description: Historical expanded dynamic search ad information
+      - name: expanded_text_ad_history
+        description: Historical expanded text ad information
+      - name: hotel_ad_history
+        description: Historical hotel ad information
+      - name: image_ad_history
+        description: Historical image ad information
+      - name: legacy_app_install_ad_history
+        description: Historical legacy app install ad information
+      - name: legacy_responsive_display_ad_history
+        description: Historical legacy responsive display ad information
+      - name: local_ad_history
+        description: Historical local ad information
+      - name: responsive_display_ad_history
+        description: Historical responsive display ad information
+      - name: responsive_search_ad_history
+        description: Historical responsive search ad information
+      - name: shopping_comparison_listing_ad_history
+        description: Historical shopping comparison listing ad information
+      - name: shopping_product_ad_history
+        description: Historical shopping product ad information
+      - name: shopping_smart_ad_history
+        description: Historical shopping smart ad information
+      - name: smart_campaign_ad_history
+        description: Historical smart campaign ad information
+      - name: text_ad_history
+        description: Historical text ad information
+      - name: video_ad_history
+        description: Historical video ad information
+      - name: video_responsive_ad_history
+        description: Historical video responsive ad information
+      
+      # Performance Stats Tables
+      - name: click_stats
+        description: Click-level performance statistics
+      - name: keyword_stats
+        description: Keyword performance statistics
+      - name: search_keyword_stats
+        description: Search keyword performance statistics
+      - name: search_term_stats
+        description: Search term performance statistics
+      - name: search_term_keyword_stats
+        description: Search term keyword performance statistics
+      - name: landing_page_stats
+        description: Landing page performance statistics
+      - name: audience_stats
+        description: Audience performance statistics
+      
+      # Reference/Dimension Tables
+      - name: audience
+        description: Audience definitions
+      - name: combined_audience
+        description: Combined audience definitions
+      - name: custom_audience
+        description: Custom audience definitions
+      - name: geo_target
+        description: Geographic targeting constants
+      - name: label
+        description: Label definitions
+      - name: mobile_device
+        description: Mobile device constants
+      - name: operating_system_version
+        description: Operating system version constants
+      - name: topic
+        description: Topic constants for targeting
+      - name: user_interest
+        description: User interest categories
+      - name: user_list
+        description: User list definitions
+      
+      # Shared Sets
+      - name: shared_set_history
+        description: Historical shared set information
+      - name: shared_criterion_history
+        description: Historical shared criterion information
+      
+      # Lead Forms
+      - name: lead_form_submission_data
+        description: Lead form submission data
+      - name: local_services_lead
+        description: Local services lead information
+      - name: local_services_lead_conversations
+        description: Local services lead conversation details
