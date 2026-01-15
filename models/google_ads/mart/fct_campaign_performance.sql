@@ -1,12 +1,19 @@
 {{
     config(
-        materialized='table',
+        materialized='incremental',
+        unique_key=['account_id', 'campaign_id', 'stat_date', 'ad_network_type', 'device'],
+        incremental_strategy='merge',
         description='Daily campaign performance metrics with historical campaign information'
     )
 }}
 
 with campaign_stats as (
     select * from {{ ref('stg_google_ads__campaign_stats') }}
+    {% if is_incremental() %}
+        -- Only process recent data to capture any late-arriving data
+        -- Configurable via dbt_project.yml: vars (supports days/hours/minutes)
+        where {{ get_incremental_lookback_filter() }}
+    {% endif %}
 ),
 
 campaign_history as (

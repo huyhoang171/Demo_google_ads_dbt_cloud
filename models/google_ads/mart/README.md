@@ -7,29 +7,42 @@ The mart layer contains models that have been transformed and optimized for repo
 ### Fact Tables
 Fact tables contain detailed daily metrics with complete dimensions:
 
+**⚡ Incremental Models** - All fact tables use `incremental` materialization with `merge` strategy for optimal performance:
+- Only processes data from the **last N days** on each run (default: 3 days, configurable)
+- Uses `unique_key` to update existing records and insert new ones
+- Significantly reduces processing time and BigQuery costs
+- Full refresh available when needed with `dbt run --full-refresh`
+- **Configuration**: Adjust lookback window in `dbt_project.yml` → `vars.incremental_lookback_days`
+- **See**: [INCREMENTAL_GUIDE.md](INCREMENTAL_GUIDE.md) and [CONFIGURATION.md](../../../CONFIGURATION.md) for details
+
 1. **fct_campaign_performance**
    - Daily campaign performance
    - Includes: impressions, clicks, cost, conversions, and calculated metrics
    - Use for: Detailed performance analysis of individual campaigns
+   - Unique key: `[account_id, campaign_id, stat_date, ad_network_type, device]`
 
 2. **fct_ad_group_performance**
    - Daily ad group performance
    - Includes campaign and ad group context
    - Use for: Analyzing ad group performance within campaigns
+   - Unique key: `[account_id, campaign_id, ad_group_id, stat_date, ad_network_type, device]`
 
 3. **fct_ad_performance**
    - Daily ad performance
    - Includes full hierarchy: campaign → ad group → ad
    - Use for: Detailed performance analysis of individual ads
+   - Unique key: `[account_id, campaign_id, ad_group_id, ad_id, stat_date, ad_network_type, device]`
 
 4. **fct_keyword_performance**
    - Daily keyword performance
    - Includes keyword text and match type
    - Use for: Analyzing which keywords are performing well
+   - Unique key: `[account_id, campaign_id, ad_group_id, criterion_id, stat_date, ad_network_type, device]`
 
 5. **fct_search_term_performance**
    - Daily search term performance (actual user queries)
    - Use for: Understanding what users are searching for, finding negative keywords
+   - Unique key: `[account_id, campaign_id, ad_group_id, search_term, stat_date, ad_network_type, device]`
 
 ### Report Tables
 Pre-aggregated report tables for reporting:
@@ -318,12 +331,34 @@ Display Labels:
 
 ## 🔄 Refresh Schedule
 
-- **Fact Tables**: Should be refreshed daily
-- **Report Tables**: Can be refreshed daily or on-demand
-- All models are set to `materialized='table'` for faster queries
+### Fact Tables (Incremental)
+- **Daily runs**: Process only last 3 days of data (incremental updates)
+- **Run time**: ~Minutes (vs hours for full refresh)
+- **Command**: `dbt run --models fct_*`
+- **Full refresh** (if needed): `dbt run --models fct_* --full-refresh`
+
+### Report Tables (Full Refresh)
+- **Daily runs**: Recompute all aggregations from fact tables
+- **Run time**: Fast, since fact tables are pre-computed
+- **Command**: `dbt run --models rpt_*`
+
+### Incremental Strategy Benefits
+- ⚡ **Faster**: Only processes 3 days instead of entire history
+- 💰 **Cheaper**: Significantly reduced BigQuery costs
+- 🔄 **Late data handling**: 3-day lookback captures late-arriving data
+- 🎯 **Merge strategy**: Updates existing records if data changes
+
+### When to Full Refresh
+Run `dbt run --full-refresh` when:
+- Initial setup or migration
+- Schema changes to models
+- Data quality issues requiring reprocessing
+- Backfilling historical data
 
 ## 📝 Notes
 
+- **Fact Tables**: Use `incremental` materialization with 3-day lookback window
+- **Report Tables**: Use `table` materialization (full refresh each run)
 - All costs have been converted from micros to actual currency
 - Only uses active records (`is_active = true`) from history tables
 - Metrics are calculated with safe division (prevents division by zero)

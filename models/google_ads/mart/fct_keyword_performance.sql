@@ -1,19 +1,25 @@
 {{
     config(
-        materialized='table',
+        materialized='incremental',
+        unique_key=['account_id', 'campaign_id', 'ad_group_id', 'criterion_id', 'stat_date', 'ad_network_type', 'device'],
+        incremental_strategy='merge',
         description='Daily keyword performance metrics with campaign and ad group context'
     )
 }}
 
 with keyword_stats as (
     select * from {{ ref('stg_google_ads__keyword_stats') }}
+    {% if is_incremental() %}
+        -- Only process recent data to capture any late-arriving data
+        -- Configurable via dbt_project.yml: vars (supports days/hours/minutes)
+        where {{ get_incremental_lookback_filter() }}
+    {% endif %}
 ),
 
 keyword_history as (
     select 
         criterion_id,
         ad_group_id,
-        campaign_id,
         keyword_text,
         keyword_match_type,
         criterion_status,
@@ -141,7 +147,6 @@ final as (
     left join keyword_history kh
         on ks.criterion_id = kh.criterion_id
         and ks.ad_group_id = kh.ad_group_id
-        and ks.campaign_id = kh.campaign_id
     left join ad_group_history agh
         on ks.ad_group_id = agh.ad_group_id
         and ks.campaign_id = agh.campaign_id

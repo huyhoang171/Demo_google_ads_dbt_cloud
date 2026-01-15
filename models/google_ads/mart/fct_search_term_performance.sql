@@ -1,12 +1,19 @@
 {{
     config(
-        materialized='table',
+        materialized='incremental',
+        unique_key=['account_id', 'campaign_id', 'ad_group_id', 'search_term', 'stat_date', 'ad_network_type', 'device'],
+        incremental_strategy='merge',
         description='Daily search term performance metrics showing actual search queries that triggered ads'
     )
 }}
 
 with search_term_stats as (
     select * from {{ ref('stg_google_ads__search_term_stats') }}
+    {% if is_incremental() %}
+        -- Only process recent data to capture any late-arriving data
+        -- Configurable via dbt_project.yml: vars (supports days/hours/minutes)
+        where {{ get_incremental_lookback_filter() }}
+    {% endif %}
 ),
 
 ad_group_history as (
