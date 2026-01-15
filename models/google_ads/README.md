@@ -73,7 +73,7 @@ dbt test --models google_ads
 
 - **Staging Models**: 15 views
 - **Fact Tables**: 5 incremental models
-- **Report Tables**: 7 aggregated tables
+- **Report Tables**: 8 aggregated tables
 
 ## 🎯 Key Features
 

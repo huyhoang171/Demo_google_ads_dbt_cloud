@@ -102,7 +102,7 @@ models:
 
   # Report Tables
   - name: rpt_campaign_summary
-    description: Campaign-level summary with all-time aggregated metrics
+    description: Campaign-level summary with aggregated metrics (supports optional date filtering via dbt vars)
     columns:
       - name: campaign_id
         description: Campaign ID
@@ -168,6 +168,34 @@ models:
         description: Total conversions for the month
       - name: overall_roas_percentage
         description: ROAS for the month
+
+  - name: rpt_weekly_performance
+    description: Weekly performance trends over time (Monday-Sunday weeks)
+    columns:
+      - name: year_week
+        description: Year and ISO week number in YYYY-Www format
+      - name: week_start_date
+        description: First day of the week (Monday)
+      - name: week_end_date
+        description: Last day of the week (Sunday)
+      - name: num_accounts
+        description: Number of distinct accounts active in this week
+      - name: num_campaigns
+        description: Number of distinct campaigns active in this week
+      - name: num_days
+        description: Number of days with data in this week
+      - name: total_cost
+        description: Total spend for the week
+      - name: total_conversions
+        description: Total conversions for the week
+      - name: overall_ctr
+        description: Overall click-through rate for the week (%)
+      - name: overall_cpc
+        description: Overall cost per click for the week
+      - name: overall_conversion_rate
+        description: Overall conversion rate for the week (%)
+      - name: overall_roas_percentage
+        description: Return on ad spend for the week (%)
 
   - name: rpt_budget_tracking
     description: Detailed budget tracking report with spend analysis and pacing metrics

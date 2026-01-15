@@ -94,11 +94,12 @@ dbt run --models fct_* --vars '{"incremental_lookback_minutes": 30}'
 - `fct_search_term_performance` - Search query metrics
 
 **Report Tables** (Aggregated, full refresh):
-- `rpt_campaign_summary` - All-time campaign summary
+- `rpt_campaign_summary` - All-time campaign summary (supports date filtering)
 - `rpt_budget_tracking` - Budget analysis & pacing
 - `rpt_budget_gauge` - Gauge chart visualization data
 - `rpt_device_performance` - Device comparison
 - `rpt_monthly_performance` - Monthly trends
+- `rpt_weekly_performance` - Weekly trends (Monday-Sunday)
 
 ### 💰 Budget Tracking
 - Real-time budget vs spend monitoring

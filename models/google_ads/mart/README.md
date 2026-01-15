@@ -51,6 +51,7 @@ Pre-aggregated report tables for reporting:
    - All-time performance summary of campaigns
    - Metrics: total cost, conversions, ROI, CTR, etc.
    - **NEW**: Budget tracking with total budget, spend %, remaining budget
+   - **NEW**: Supports optional date filtering via dbt vars (`start_date`, `end_date`)
    - Use for: Campaign overview dashboard
 
 2. **rpt_ad_group_summary**
@@ -65,13 +66,18 @@ Pre-aggregated report tables for reporting:
    - Monthly trends
    - Use for: Time-based trend analysis, month-over-month comparison
 
-5. **rpt_budget_tracking** ⭐ NEW
+5. **rpt_weekly_performance** ⭐ NEW
+   - Weekly performance trends (Monday-Sunday weeks)
+   - Metrics: total cost, conversions, CTR, ROAS by week
+   - Use for: Week-over-week comparison, weekly reporting
+
+6. **rpt_budget_tracking** ⭐ NEW
    - Detailed budget tracking with pacing analysis
    - Metrics: daily budget, total spent, budget %, pacing status
    - Days over/under budget, average daily spend
    - Use for: Budget management and optimization
 
-6. **rpt_budget_gauge** ⭐ NEW
+7. **rpt_budget_gauge** ⭐ NEW
    - Simplified metrics for Gauge chart visualization
    - Ad Spend vs Budget comparison
    - Multi-level views: Account, Channel, Campaign, Status
@@ -153,6 +159,33 @@ SELECT
 FROM {{ ref('rpt_monthly_performance') }}
 ORDER BY month_start_date DESC
 LIMIT 12
+```
+
+#### 3b. Weekly trends ⭐ NEW
+```sql
+SELECT 
+    year_week,
+    week_start_date,
+    week_end_date,
+    total_cost,
+    total_conversions,
+    overall_ctr,
+    overall_roas_percentage
+FROM {{ ref('rpt_weekly_performance') }}
+ORDER BY week_start_date DESC
+LIMIT 12
+```
+
+#### 3c. Campaign summary with date filter ⭐ NEW
+```bash
+# Filter by date range (run via dbt command)
+dbt run --models rpt_campaign_summary --vars '{"start_date": "2024-01-01", "end_date": "2024-12-31"}'
+
+# Filter from date onwards
+dbt run --models rpt_campaign_summary --vars '{"start_date": "2024-01-01"}'
+
+# Filter up to date
+dbt run --models rpt_campaign_summary --vars '{"end_date": "2024-12-31"}'
 ```
 
 #### 4. Best performing keywords

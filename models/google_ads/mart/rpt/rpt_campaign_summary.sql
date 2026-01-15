@@ -1,12 +1,21 @@
 {{
     config(
         materialized='table',
-        description='Campaign-level summary aggregating all-time performance metrics'
+        description='Campaign-level summary aggregating all-time performance metrics with optional date filtering'
     )
 }}
 
 with campaign_performance as (
     select * from {{ ref('fct_campaign_performance') }}
+    {% if var('start_date', none) or var('end_date', none) %}
+    where 1=1
+        {% if var('start_date', none) %}
+        and stat_date >= '{{ var('start_date') }}'
+        {% endif %}
+        {% if var('end_date', none) %}
+        and stat_date <= '{{ var('end_date') }}'
+        {% endif %}
+    {% endif %}
 ),
 
 final as (
